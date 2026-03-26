@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { NCard, NForm, NFormItem, NInput, NButton, NCheckbox, NDivider, useMessage } from 'naive-ui';
-import { useRouter, useRoute } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import { NButton, NCard, NCheckbox, NDivider, NForm, NFormItem, NInput, useMessage } from 'naive-ui';
+import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 
 const router = useRouter();
@@ -17,38 +17,40 @@ const formValue = ref({
   username: '',
   password: '',
   captcha: '',
-  rememberMe: false
+  rememberMe: false,
 });
 
 const rules = {
   username: {
     required: true,
     message: '請輸入帳號',
-    trigger: 'blur'
+    trigger: 'blur',
   },
   password: {
     required: true,
     message: '請輸入密碼',
-    trigger: 'blur'
+    trigger: 'blur',
   },
   captcha: {
     required: true,
     message: '請輸入驗證碼',
     trigger: 'blur',
     validator: (rule: any, value: string) => {
-      return value.toLowerCase() === captchaText.value.toLowerCase() 
-        ? true 
+      return value.toLowerCase() === captchaText.value.toLowerCase()
+        ? true
         : new Error('驗證碼錯誤');
-    }
-  }
+    },
+  },
 };
 
-const generateCaptcha = () => {
+function generateCaptcha() {
   const canvas = captchaCanvas.value;
-  if (!canvas) return;
+  if (!canvas)
+    return;
 
   const ctx = canvas.getContext('2d');
-  if (!ctx) return;
+  if (!ctx)
+    return;
 
   // 清空画布
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -56,9 +58,9 @@ const generateCaptcha = () => {
   // 生成随机验证码
   const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   let code = '';
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 4; i++)
     code += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
+
   captchaText.value = code;
 
   // 绘制背景
@@ -70,7 +72,7 @@ const generateCaptcha = () => {
   ctx.fillStyle = '#333';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  
+
   // 在一条直线上绘制字符
   for (let i = 0; i < code.length; i++) {
     const x = 20 + i * 25;
@@ -92,9 +94,9 @@ const generateCaptcha = () => {
     ctx.fillStyle = `rgba(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255},0.5)`;
     ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 2, 2);
   }
-};
+}
 
-const handleSubmit = () => {
+function handleSubmit() {
   formRef.value?.validate(async (errors: any) => {
     if (!errors) {
       loading.value = true;
@@ -102,32 +104,33 @@ const handleSubmit = () => {
         await userStore.signin({
           username: formValue.value.username,
           password: formValue.value.password,
-          rememberMe: formValue.value.rememberMe
+          rememberMe: formValue.value.rememberMe,
         });
         message.success('登入成功');
-        
+
         // 檢查是否有重定向路徑
         const redirect = route.query.redirect as string;
         setTimeout(() => {
-          if (redirect) {
-            window.location.href = window.location.origin + '/#' + redirect;
-          } else {
-            window.location.href = window.location.origin + '/#/member/dashboard';
-          }
+          if (redirect)
+            window.location.href = `${window.location.origin}/#${redirect}`;
+          else
+            window.location.href = `${window.location.origin}/#/member/dashboard`;
         }, 500);
-      } catch (error: any) {
+      }
+      catch (error: any) {
         message.error(error.response?.data?.detail || error.message || '登入失敗');
         generateCaptcha(); // 重新生成驗證碼
-      } finally {
+      }
+      finally {
         loading.value = false;
       }
     }
   });
-};
+}
 
-const goToRegister = () => {
+function goToRegister() {
   router.push('/register');
-};
+}
 
 onMounted(() => {
   generateCaptcha();
@@ -138,7 +141,9 @@ onMounted(() => {
   <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
     <NCard class="max-w-md w-full">
       <div class="text-center">
-        <h2 class="text-2xl font-bold mb-6">會員登入</h2>
+        <h2 class="text-2xl font-bold mb-6">
+          會員登入
+        </h2>
       </div>
 
       <NForm
@@ -183,9 +188,9 @@ onMounted(() => {
                 class="border cursor-pointer"
                 @click="generateCaptcha"
               />
-              <NButton circle quaternary @click="generateCaptcha" :disabled="loading">
+              <NButton circle quaternary :disabled="loading" @click="generateCaptcha">
                 <template #icon>
-                  <div class="i-material-symbols:refresh"></div>
+                  <div class="i-material-symbols:refresh" />
                 </template>
               </NButton>
             </div>
@@ -196,7 +201,7 @@ onMounted(() => {
           <NCheckbox v-model:checked="formValue.rememberMe" :disabled="loading">
             記住我
           </NCheckbox>
-          <NButton text type="primary" @click="router.push('/forgot-password')" :disabled="loading">
+          <NButton text type="primary" :disabled="loading" @click="router.push('/forgot-password')">
             忘記密碼？
           </NButton>
         </div>
@@ -219,8 +224,8 @@ onMounted(() => {
           <NButton
             block
             strong
-            @click="goToRegister"
             :disabled="loading"
+            @click="goToRegister"
           >
             註冊新帳號
           </NButton>

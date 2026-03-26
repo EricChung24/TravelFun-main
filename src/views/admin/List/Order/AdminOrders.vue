@@ -224,7 +224,7 @@ onMounted(() => {
       </template>
     </BasicTable>
     <OrderModal
-      v-model:showModal="showModal"
+      v-model:show-modal="showModal"
       :is-loading="isLoading"
       :temp-order="tempOrder"
       @update-order="updateOrder"

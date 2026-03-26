@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import Header from '@/components/Header';
+</script>
+
 <template>
   <div class="min-h-screen bg-gray-50">
     <Header />
@@ -22,12 +26,8 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import Header from '@/components/Header';
-</script>
-
 <style scoped>
 .router-link-active {
   @apply text-blue-600;
 }
-</style> 
+</style>

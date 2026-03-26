@@ -16,8 +16,12 @@ const title = ref('主題育樂');
       </template>
     </Banner>
     <div class="container mx-auto px-4 py-8">
-      <h2 class="text-2xl font-bold mb-6">即將推出</h2>
-      <p class="text-gray-600">我們正在籌備更多精彩的主題活動，敬請期待！</p>
+      <h2 class="text-2xl font-bold mb-6">
+        即將推出
+      </h2>
+      <p class="text-gray-600">
+        我們正在籌備更多精彩的主題活動，敬請期待！
+      </p>
     </div>
   </main>
-</template> 
+</template>

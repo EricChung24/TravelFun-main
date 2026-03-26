@@ -1,132 +1,103 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { type RouteRecordRaw, createRouter, createWebHashHistory } from 'vue-router';
 import { useCartStore, useUserStore } from '@/stores';
-import type { RouteRecordRaw } from 'vue-router';
-import { createDiscreteApi } from 'naive-ui';
 
-const { message } = createDiscreteApi(['message']);
 const { VITE_TITLE } = import.meta.env;
 
-const routes: Array<RouteRecordRaw> = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Front',
-    component: () => import('../layout/FrontLayout.vue'),
+    component: () => import('@/layout/FrontLayout.vue'),
     children: [
       {
         path: '',
         name: 'Home',
-        component: () => import('../views/front/Home/HomeView.vue'),
-        meta: {
-          title: VITE_TITLE,
-        },
+        component: () => import('@/views/front/Home/HomeView.vue'),
+        meta: { title: VITE_TITLE },
       },
       {
         path: 'mall',
         name: 'Mall',
-        component: () => import('../views/front/Mall/MallView.vue'),
-        meta: {
-          title: '商城中心 - Travel Fun',
-        },
+        component: () => import('@/views/front/Mall/MallView.vue'),
+        meta: { title: 'Mall - Travel Fun' },
       },
       {
         path: 'activity',
         name: 'Activity',
-        component: () => import('../views/front/Activity/ActivityView.vue'),
-        meta: {
-          title: '主題育樂 - Travel Fun',
-        },
+        component: () => import('@/views/front/Activity/ActivityView.vue'),
+        meta: { title: 'Activity - Travel Fun' },
       },
       {
         path: 'member',
         name: 'Member',
-        component: () => import('../views/front/Member/MemberView.vue'),
+        component: () => import('@/views/front/Member/MemberView.vue'),
         meta: {
-          title: '會員中心 - Travel Fun',
-          requiresAuth: true
+          title: 'Member - Travel Fun',
+          requiresAuth: true,
         },
       },
       {
         path: 'forum',
         name: 'Forum',
-        component: () => import('../views/front/Forum/ForumView.vue'),
-        meta: {
-          title: '討論區 - Travel Fun',
-        },
+        component: () => import('@/views/front/Forum/ForumView.vue'),
+        meta: { title: 'Forum - Travel Fun' },
       },
       {
         path: 'forum/post/:id',
         name: 'PostDetail',
-        component: () => import('../views/front/Forum/components/PostDetail.vue'),
-        meta: {
-          title: '文章詳情 - Travel Fun',
-        }
+        component: () => import('@/views/front/Forum/components/PostDetail.vue'),
+        meta: { title: 'Post - Travel Fun' },
       },
       {
         path: 'login',
         name: 'Login',
-        component: () => import('../views/front/Login/LoginView.vue'),
-        meta: {
-          title: '後台登入 - Travel Fun',
-        },
+        component: () => import('@/views/front/Login/LoginView.vue'),
+        meta: { title: 'Login - Travel Fun' },
       },
       {
         path: 'register',
         name: 'Register',
-        component: () => import('../views/front/Login/components/Register.vue'),
-        meta: {
-          title: '註冊帳號 - Travel Fun',
-        },
+        component: () => import('@/views/front/Login/components/Register.vue'),
+        meta: { title: 'Register - Travel Fun' },
       },
       {
         path: 'country/:countryName',
         name: 'Country',
-        component: () => import('../views/front/Country/CountryView.vue'),
-        meta: {
-          title: '台灣自由行 - Travel Fun',
-        },
+        component: () => import('@/views/front/Country/CountryView.vue'),
+        meta: { title: 'Country - Travel Fun' },
       },
       {
         path: 'city/:cityName',
         name: 'City',
-        component: () => import('../views/front/City/CityView.vue'),
-        meta: {
-          title: '全台熱門景點 - Travel Fun',
-        },
+        component: () => import('@/views/front/City/CityView.vue'),
+        meta: { title: 'City - Travel Fun' },
       },
       {
         path: 'city/:cityName/products/:category?',
         name: 'CityProducts',
-        component: () => import('../views/front/Products/ProductsView.vue'),
+        component: () => import('@/views/front/Products/ProductsView.vue'),
         props: route => ({ sort: route.query.sort, mode: 'city' }),
-        meta: {
-          title: '全台熱門景點 - Travel Fun',
-        },
+        meta: { title: 'Products - Travel Fun' },
       },
       {
         path: 'country/:countryName/products/:category?',
         name: 'CountryProducts',
-        component: () => import('../views/front/Products/ProductsView.vue'),
+        component: () => import('@/views/front/Products/ProductsView.vue'),
         props: route => ({ sort: route.query.sort, mode: 'country' }),
-        meta: {
-          title: '台灣自由行 - Travel Fun',
-        },
+        meta: { title: 'Products - Travel Fun' },
       },
       {
         path: 'product/:productId',
         name: 'Product',
-        component: () => import('../views/front/Product/ProductView.vue'),
-        meta: {
-          title: '旅遊行程 - Travel Fun',
-        },
+        component: () => import('@/views/front/Product/ProductView.vue'),
+        meta: { title: 'Product - Travel Fun' },
       },
       {
         path: 'cart',
         name: 'Cart',
-        component: () => import('../views/front/Cart/CartView.vue'),
-        meta: {
-          title: '購物車 - Travel Fun',
-        },
-        async beforeEnter(_to, _from) {
+        component: () => import('@/views/front/Cart/CartView.vue'),
+        meta: { title: 'Cart - Travel Fun' },
+        async beforeEnter() {
           const cartStore = useCartStore();
           await cartStore.getCarts();
         },
@@ -134,101 +105,86 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: 'booking',
         name: 'Book',
-        component: () => import('../views/front/Book/BookView.vue'),
+        component: () => import('@/views/front/Book/BookView.vue'),
         children: [
           {
             path: 'order',
             name: 'Order',
-            component: () => import('../views/front/Book/components/Order.vue'),
-            meta: {
-              title: '填寫資料 - Travel Fun',
-            },
+            component: () => import('@/views/front/Book/components/Order.vue'),
+            meta: { title: 'Order - Travel Fun' },
           },
           {
             path: 'pay/:orderId',
             name: 'Pay',
-            component: () => import('../views/front/Book/components/Pay.vue'),
-            meta: {
-              title: '付款 - Travel Fun',
-            },
+            component: () => import('@/views/front/Book/components/Pay.vue'),
+            meta: { title: 'Pay - Travel Fun' },
           },
           {
             path: 'done/:orderId',
             name: 'Done',
-            component: () => import('../views/front/Book/components/Done.vue'),
-            meta: {
-              title: '訂購完成 - Travel Fun',
-            },
+            component: () => import('@/views/front/Book/components/Done.vue'),
+            meta: { title: 'Done - Travel Fun' },
           },
         ],
       },
       {
         path: 'wishlist',
         name: 'WishList',
-        component: () => import('../views/front/WishList/WishListView.vue'),
-        meta: {
-          title: '我的最愛 - Travel Fun',
-        },
+        component: () => import('@/views/front/WishList/WishListView.vue'),
+        meta: { title: 'Wishlist - Travel Fun' },
       },
       {
         path: 'about',
         name: 'About',
-        component: () => import('../views/front/About/AboutView.vue'),
-        meta: {
-          title: '關於我們 - Travel Fun',
-        },
+        component: () => import('@/views/front/About/AboutView.vue'),
+        meta: { title: 'About - Travel Fun' },
       },
     ],
   },
   {
     path: '/admin',
     name: 'Dashboard',
-    component: () => import('../layout/Dashboard.vue'),
+    component: () => import('@/layout/Dashboard.vue'),
+    meta: {
+      title: 'Dashboard - Travel Fun',
+      requiresAuth: true,
+    },
     children: [
       {
         path: 'home',
         name: 'AdminHome',
-        component: () => import('../views/admin/Home/AdminHomeView.vue'),
+        component: () => import('@/views/admin/Home/AdminHomeView.vue'),
         meta: {
-          title: 'Dashboard',
+          title: 'Dashboard Home - Travel Fun',
           requiresAuth: true,
         },
       },
       {
-        path: 'list',
+        path: 'list/products',
+        name: 'AdminProducts',
+        component: () => import('@/views/admin/List/Product/AdminProducts.vue'),
         meta: {
-          title: '列表頁面',
+          title: 'Products - Admin',
           requiresAuth: true,
         },
-        children: [
-          {
-            path: 'products',
-            name: 'AdminProducts',
-            component: () => import('../views/admin/List/Product/AdminProducts.vue'),
-            meta: {
-              title: '產品列表',
-              requiresAuth: true,
-            },
-          },
-          {
-            path: 'orders',
-            name: 'AdminOrders',
-            component: () => import('../views/admin/List/Order/AdminOrders.vue'),
-            meta: {
-              title: '訂單列表',
-              requiresAuth: true,
-            },
-          },
-          {
-            path: 'coupons',
-            name: 'AdminCoupons',
-            component: () => import('../views/admin/List/Coupon/AdminCoupons.vue'),
-            meta: {
-              title: '優惠卷列表',
-              requiresAuth: true,
-            },
-          },
-        ],
+      },
+      {
+        path: 'list/orders',
+        name: 'AdminOrders',
+        component: () => import('@/views/admin/List/Order/AdminOrders.vue'),
+        meta: {
+          title: 'Orders - Admin',
+          requiresAuth: true,
+        },
+      },
+      {
+        path: 'list/coupons',
+        name: 'AdminCoupons',
+        component: () => import('@/views/admin/List/Coupon/AdminCoupons.vue'),
+        meta: {
+          title: 'Coupons - Admin',
+          requiresAuth: true,
+        },
       },
     ],
   },
@@ -236,58 +192,42 @@ const routes: Array<RouteRecordRaw> = [
     path: '/member',
     name: 'MemberLayout',
     component: () => import('@/views/front/Member/MemberLayout.vue'),
-    meta: { 
+    meta: {
+      title: 'Member Center - Travel Fun',
       requiresAuth: true,
-      title: '會員中心'
     },
     children: [
       {
         path: 'dashboard',
         name: 'MemberDashboard',
         component: () => import('@/views/front/Member/DashboardView.vue'),
-        meta: { 
+        meta: {
+          title: 'Member Dashboard - Travel Fun',
           requiresAuth: true,
-          title: '會員中心' 
-        }
+        },
       },
       {
         path: 'profile',
         name: 'MemberProfile',
-        component: () => import('@/views/front/Member/ProfileView.vue'),
-        meta: { 
-          requiresAuth: true,
-          title: '個人資料' 
-        }
+        redirect: { name: 'MemberDashboard' },
       },
       {
         path: 'orders',
         name: 'MemberOrders',
-        component: () => import('@/views/front/Member/OrdersView.vue'),
-        meta: { 
-          requiresAuth: true,
-          title: '訂單管理' 
-        }
+        redirect: { name: 'MemberDashboard' },
       },
       {
         path: 'messages',
         name: 'MemberMessages',
-        component: () => import('@/views/front/Member/MessagesView.vue'),
-        meta: { 
-          requiresAuth: true,
-          title: '訊息中心' 
-        }
+        redirect: { name: 'MemberDashboard' },
       },
       {
         path: 'coupons',
         name: 'MemberCoupons',
-        component: () => import('@/views/front/Member/CouponsView.vue'),
-        meta: { 
-          requiresAuth: true,
-          title: '優惠券' 
-        }
-      }
-    ]
-  }
+        redirect: { name: 'MemberDashboard' },
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
@@ -298,24 +238,23 @@ const router = createRouter({
   },
 });
 
-// 全局前置守衛
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   const userStore = useUserStore();
-  
-  // 檢查路由是否需要認證
+
   if (to.meta.requiresAuth && !userStore.loginStatus) {
-    // 如果需要認證但用戶未登入，重定向到登入頁面
-    next({ 
+    next({
       name: 'Login',
-      query: { redirect: to.fullPath }
+      query: { redirect: to.fullPath },
     });
-  } else {
-    // 更新頁面標題
-    if (to.meta.title) {
-      document.title = to.meta.title;
-    }
-    next();
+    return;
   }
+
+  if (typeof to.meta.title === 'string' && to.meta.title.length > 0)
+    document.title = to.meta.title;
+  else if (VITE_TITLE)
+    document.title = VITE_TITLE;
+
+  next();
 });
 
 export default router;

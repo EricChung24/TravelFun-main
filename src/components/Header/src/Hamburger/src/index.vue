@@ -5,7 +5,7 @@ import {
 import { NCollapse, NCollapseItem, NDrawer, NIcon } from 'naive-ui';
 import { computed, reactive } from 'vue';
 import { onBeforeRouteUpdate } from 'vue-router';
-import { handleItemHeaderClick, createNavList } from '../../navList.ts';
+import { createNavList, handleItemHeaderClick } from '../../navList.ts';
 import HamburgerBtn from './Btn.vue';
 import type { DrawerActive } from '@/types';
 

@@ -5,6 +5,8 @@ function MyUploadAdapter(loader: any) {
   const upload = async () => {
     const file = await loader.file;
     const imageFormData = imageTransformHandler(file);
+    if (!imageFormData)
+      throw new Error('Image transform failed');
     const res = await apiAdminUploadImage(imageFormData);
     return { default: res?.data?.imageUrl ?? '' };
   };

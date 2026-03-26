@@ -7,7 +7,6 @@ import {
 } from 'naive-ui';
 import { computed, onMounted } from 'vue';
 import { RouterView, useRoute, useRouter } from 'vue-router';
-import Header from '@/components/Header/src/index.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -59,7 +58,6 @@ onMounted(() => {
     <NLoadingBarProvider>
       <NMessageProvider>
         <NDialogProvider>
-          <Header />
           <RouterView />
         </NDialogProvider>
       </NMessageProvider>
